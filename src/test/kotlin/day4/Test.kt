@@ -23,4 +23,11 @@ class Test {
         val accessibleRollsCount = paperGrid.accessibleRollsCount()
         assertEquals(13, accessibleRollsCount)
     }
+
+    @Test
+    fun part2Example() {
+        val paperGrid = PaperGrid.parse(input)
+        val accessibleRollsCount = paperGrid.recursivelyAccessibleRollsCount()
+        assertEquals(43, accessibleRollsCount)
+    }
 }

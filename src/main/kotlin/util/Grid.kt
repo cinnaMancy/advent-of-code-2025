@@ -1,9 +1,13 @@
 package util
 
-class Board(
+class Grid(
     val tiles: List<Tile>
 ) {
-    val dimensions get(): Pair<Int, Int> = Pair(tiles.maxOf { it.coordinates.x }, tiles.maxOf { it.coordinates.y })
+    val dimensions
+        get(): Pair<Int, Int> = Pair(
+            tiles.maxOf { it.coordinates.x } + 1,
+            tiles.maxOf { it.coordinates.y } + 1
+        )
 
     operator fun get(coordinates: Coordinates): Tile? =
         tiles.find { it.coordinates == coordinates }
@@ -17,8 +21,8 @@ class Board(
         .filter { it.coordinates.x == tile.coordinates.x || it.coordinates.y == tile.coordinates.y }
 
     companion object {
-        fun parse(lines: List<String>): Board =
-            Board(lines.reversed().flatMapIndexed { iY, y -> y.mapIndexed { iX, x -> Tile(Coordinates(iX, iY), x) } })
+        fun parse(lines: List<String>): Grid =
+            Grid(lines.reversed().flatMapIndexed { iY, y -> y.mapIndexed { iX, x -> Tile(Coordinates(iX, iY), x) } })
     }
 }
 
