@@ -20,15 +20,15 @@ class Test {
 
     @Test
     fun part1Example() {
-        val freshnessCalculator = FreshnessCalculator.parse(input)
-        val freshIdsCount = freshnessCalculator.freshIdsCount()
+        val freshIds = FreshIds.parse(input)
+        val freshIdsCount = freshIds.freshIdsCount()
         assertEquals(3, freshIdsCount)
     }
 
-//    @Test
-//    fun part2Example() {
-//        val freshnessCalculator = FreshnessCalculator.parse(input)
-//        val possibleFreshIdsCount = freshnessCalculator.possibleFreshIdsCount()
-//        assertEquals(14, possibleFreshIdsCount)
-//    }
+    @Test
+    fun part2Example() {
+        val freshIds = FreshIds.parse(input)
+        val allPossibleFreshIdsCount = freshIds.allPossibleFreshIdsCount()
+        assertEquals(14, allPossibleFreshIdsCount)
+    }
 }
