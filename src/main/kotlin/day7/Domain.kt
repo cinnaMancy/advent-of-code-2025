@@ -12,6 +12,10 @@ class TachyonManifold(
         return countSplits(finalGrid)
     }
 
+    fun totalTimelines(): Int {
+
+    }
+
     private fun progressRow(grid: Grid, y: Int): Grid {
         val tilesInRow = (0..<grid.dimensions.first).map { x -> grid[x, y]!! }
         val nextTilesInRow = tilesInRow.map { tile ->
@@ -26,14 +30,14 @@ class TachyonManifold(
     }
 
     private fun beamContinues(grid: Grid, tile: Tile): Boolean {
-        val above = grid[tile.x, tile.y + 1]
-        val continuesStraight = above.isEmitting()
-        val sides = listOf(grid[tile.x - 1, tile.y], grid[tile.x + 1, tile.y])
-        val continuesSplit = sides
-            .filterNotNull()
-            .any { side -> side.isSplitter() && grid[side.x, side.y + 1].isEmitting() }
+        val continuesStraight = tile.above(grid).isEmitting()
+        val continuesSplit = tile.sides(grid).any { side -> side.isSplitter() && grid[side.x, side.y + 1].isEmitting() }
         return continuesStraight || continuesSplit
     }
+
+    private fun Tile.above(grid: Grid): Tile? = grid[x, y + 1]
+
+    private fun Tile.sides(grid: Grid): List<Tile> = listOfNotNull(grid[x - 1, y], grid[x + 1, y])
 
     private fun Tile?.isEmpty(): Boolean = this?.content == '.'
 
