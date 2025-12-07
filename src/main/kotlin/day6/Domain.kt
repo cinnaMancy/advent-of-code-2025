@@ -55,7 +55,7 @@ class MathProblem(
             Operator.parse(column.last().removeWhitespace()[0])
         )
 
-        private fun String.removeWhitespace(): String = this.replace(" ", "")
+        private fun String.removeWhitespace(): String = replace(" ", "")
     }
 }
 
