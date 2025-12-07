@@ -4,21 +4,30 @@ class Grid(
     val tiles: List<Tile>
 ) {
     val dimensions
-        get(): Pair<Int, Int> = Pair(
-            tiles.maxOf { it.coordinates.x } + 1,
-            tiles.maxOf { it.coordinates.y } + 1
-        )
+        get(): Pair<Int, Int> = Pair(tiles.maxOf { it.x } + 1, tiles.maxOf { it.y } + 1)
 
-    operator fun get(coordinates: Coordinates): Tile? =
-        tiles.find { it.coordinates == coordinates }
+    operator fun get(coordinates: Coordinates): Tile? = tiles.find { it.coordinates == coordinates }
+
+    operator fun get(x: Int, y: Int): Tile? = get(Coordinates(x, y))
 
     fun adjacent(tile: Tile): List<Tile> =
-        (-1..1).flatMap { dx -> (-1..1).map { dy -> Coordinates(tile.coordinates.x + dx, tile.coordinates.y + dy) } }
-            .filterNot { it.x == tile.coordinates.x && it.y == tile.coordinates.y }
+        (-1..1).flatMap { dx -> (-1..1).map { dy -> Coordinates(tile.x + dx, tile.y + dy) } }
+            .filterNot { it.x == tile.x && it.y == tile.y }
             .mapNotNull { get(it) }
 
     fun directlyAdjacent(tile: Tile): List<Tile> = adjacent(tile)
-        .filter { it.coordinates.x == tile.coordinates.x || it.coordinates.y == tile.coordinates.y }
+        .filter { it.x == tile.x || it.y == tile.y }
+
+    fun replace(replaced: List<Tile>): Grid = Grid(
+        tiles.map { tile -> replaced.find { oneReplaced -> tile.coordinates == oneReplaced.coordinates } ?: tile }
+    )
+
+    override fun toString(): String =
+        (dimensions.second - 1 downTo 0).joinToString("\n") { y ->
+            (0..<dimensions.first).joinToString("") { x ->
+                this[Coordinates(x, y)]!!.content.toString()
+            }
+        }
 
     companion object {
         fun parse(lines: List<String>): Grid =
@@ -29,7 +38,10 @@ class Grid(
 data class Tile(
     val coordinates: Coordinates,
     val content: Char
-)
+) {
+    val x: Int get() = coordinates.x
+    val y: Int get() = coordinates.y
+}
 
 data class Coordinates(
     val x: Int,
