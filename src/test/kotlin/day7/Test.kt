@@ -29,4 +29,11 @@ class Test {
         val totalSplits = tachyonManifold.totalSplits()
         assertEquals(21, totalSplits)
     }
+
+    @Test
+    fun part2Example() {
+        val tachyonManifold = TachyonManifold.parse(input)
+        val totalTimelines = tachyonManifold.totalTimelines()
+        assertEquals(40, totalTimelines)
+    }
 }

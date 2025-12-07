@@ -3,8 +3,11 @@ package util
 class Grid(
     val tiles: List<Tile>
 ) {
-    val dimensions
-        get(): Pair<Int, Int> = Pair(tiles.maxOf { it.x } + 1, tiles.maxOf { it.y } + 1)
+    val dimensions get(): Pair<Int, Int> = Pair(tiles.maxOf { it.x } + 1, tiles.maxOf { it.y } + 1)
+
+    val rowIndices get(): IntRange = 0..<dimensions.second
+
+    val columnIndices get(): IntRange = 0..<dimensions.first
 
     operator fun get(coordinates: Coordinates): Tile? = tiles.find { it.coordinates == coordinates }
 
@@ -17,6 +20,8 @@ class Grid(
 
     fun directlyAdjacent(tile: Tile): List<Tile> = adjacent(tile)
         .filter { it.x == tile.x || it.y == tile.y }
+
+    fun row(y: Int): List<Tile> = (0..<dimensions.first).mapNotNull { x -> this[x, y] }
 
     fun replace(replaced: List<Tile>): Grid = Grid(
         tiles.map { tile -> replaced.find { oneReplaced -> tile.coordinates == oneReplaced.coordinates } ?: tile }
