@@ -11,7 +11,7 @@ fun main() {
         }."
     )
     println(
-        "Part 2: The product of X coordinates of the two last connecting junction boxes ${
+        "Part 2: The product of X coordinates of the two last connecting junction boxes is ${
             junctionBoxes.productOfXCoordinatesOfLastConnection()
         }."
     )

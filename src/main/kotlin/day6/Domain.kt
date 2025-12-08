@@ -66,7 +66,7 @@ enum class Operator(
     ADDITION('+', Long::plus),
     MULTIPLICATION('*', Long::times);
 
-    fun apply(one: Long, other: Long): Long = effect.invoke(one, other)
+    fun apply(one: Long, other: Long): Long = effect(one, other)
 
     companion object {
         fun parse(char: Char): Operator = entries.first { it.symbol == char }

@@ -10,24 +10,25 @@ class JunctionBoxes(
             }
         }.sortedBy { it.squaredDistance }
 
-    fun productOf3LargestGroupsAfterConnecting(connections: Int): Long = connect(connections).groups
-        .sortedByDescending { it.size }
-        .take(3)
-        .fold(1) { acc, coords -> acc * coords.size }
+    fun productOf3LargestGroupsAfterConnecting(connections: Int): Long =
+        connectUntil { it.connections.size == connections }
+            .groups
+            .sortedByDescending { it.size }
+            .take(3)
+            .fold(1) { acc, coords -> acc * coords.size }
 
     fun productOfXCoordinatesOfLastConnection(): Long =
-        generateSequence(JunctionBoxesConfiguration.initial(boxes)) { config ->
-            if (config.groups.size == 1) null else connectTwoClosesGroups(config)
-        }.last()
+        connectUntil { it.groups.size == 1 }
             .connections
             .last()
             .let { it.first.x * it.second.x }
 
+    private fun connectUntil(end: (JunctionBoxesConfiguration) -> Boolean): JunctionBoxesConfiguration =
+        generateSequence(JunctionBoxesConfiguration.initial(boxes)) { config ->
+            if (end(config)) null else connectClosestUnconnectedPair(config)
+        }.last()
 
-    private fun connect(connections: Int): JunctionBoxesConfiguration =
-        (0..<connections).fold(JunctionBoxesConfiguration.initial(boxes)) { acc, _ -> connectTwoClosesGroups(acc) }
-
-    private fun connectTwoClosesGroups(config: JunctionBoxesConfiguration): JunctionBoxesConfiguration {
+    private fun connectClosestUnconnectedPair(config: JunctionBoxesConfiguration): JunctionBoxesConfiguration {
         val closestUnconnectedPair = allPairsByDistanceAscending.first { !config.connections.contains(it) }
         val firstGroup = config.groups.first { it.contains(closestUnconnectedPair.first) }
         val secondGroup = config.groups.first { it.contains(closestUnconnectedPair.second) }
