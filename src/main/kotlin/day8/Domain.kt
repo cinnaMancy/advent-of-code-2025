@@ -30,14 +30,12 @@ class JunctionBoxes(
 
     private fun connectClosestUnconnectedPair(config: JunctionBoxesConfiguration): JunctionBoxesConfiguration {
         val closestUnconnectedPair = allPairsByDistanceAscending.first { !config.connections.contains(it) }
-        val firstGroup = config.groups.first { it.contains(closestUnconnectedPair.first) }
-        val secondGroup = config.groups.first { it.contains(closestUnconnectedPair.second) }
+        val group1 = config.groups.first { it.contains(closestUnconnectedPair.first) }
+        val group2 = config.groups.first { it.contains(closestUnconnectedPair.second) }
         val newGroups =
-            if (firstGroup != secondGroup) config.groups
-                .minus(setOf(firstGroup, secondGroup))
-                .plus(listOf(firstGroup.plus(secondGroup)))
+            if (group1 != group2) config.groups - setOf(group1, group2) + listOf(group1 + group2)
             else config.groups
-        return JunctionBoxesConfiguration(newGroups, config.connections.plus(closestUnconnectedPair))
+        return JunctionBoxesConfiguration(newGroups, config.connections + closestUnconnectedPair)
     }
 
     companion object {
