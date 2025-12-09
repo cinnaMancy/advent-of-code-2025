@@ -21,4 +21,11 @@ class Test {
         val maxRectangleArea = redTiles.maxRectangleArea()
         assertEquals(50, maxRectangleArea)
     }
+
+    @Test
+    fun part2Example() {
+        val redTiles = RedTiles.parse(input)
+        val maxFilledRectangleArea = redTiles.maxFilledRectangleArea()
+        assertEquals(24, maxFilledRectangleArea)
+    }
 }

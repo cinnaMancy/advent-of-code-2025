@@ -1,5 +1,8 @@
 package util
 
+import kotlin.math.max
+import kotlin.math.min
+
 class Grid(
     val tiles: List<Tile>
 ) {
@@ -22,6 +25,11 @@ class Grid(
         .filter { it.x == tile.x || it.y == tile.y }
 
     fun row(y: Int): List<Tile> = (0..<dimensions.first).mapNotNull { x -> this[x, y] }
+
+    fun rectangle(firstCorner: Tile, secondCorner: Tile) = tiles.filter {
+        (min(firstCorner.x, secondCorner.x)..max(firstCorner.x, secondCorner.x)).contains(it.x)
+                && (min(firstCorner.y, secondCorner.y)..max(firstCorner.y, secondCorner.y)).contains(it.y)
+    }
 
     fun replace(replaced: List<Tile>): Grid = Grid(
         tiles.map { tile -> replaced.find { oneReplaced -> tile.coordinates == oneReplaced.coordinates } ?: tile }
